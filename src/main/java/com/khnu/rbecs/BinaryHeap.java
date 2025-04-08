@@ -25,6 +25,10 @@ public class BinaryHeap implements MyPriorityQueue {
         size++;
     }
 
+    private void addLast(Node node) {
+        // TODO
+    }
+
     boolean promote(Node node) {
         Node parent = node.parent;
         if (node.value < parent.value) {
@@ -33,6 +37,11 @@ public class BinaryHeap implements MyPriorityQueue {
         }
         return false;
     }
+
+    private static void swap(Node node, Node parent) {
+        // TODO
+    }
+
 
     @Override
     public int size() {
@@ -53,6 +62,10 @@ public class BinaryHeap implements MyPriorityQueue {
         sink(root);
         size--;
         return res;
+    }
+
+    private Node getLast() {
+        return null; // TODO
     }
 
     void sink(Node node) {
