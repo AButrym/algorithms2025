@@ -34,6 +34,62 @@ class StringSinglyLinkedListTest {
     }
 
     @Test
+    void testStackIterator1() {
+        StringStack sa = new StringSinglyLinkedList();
+        sa.push("a");
+        sa.push("b");
+        sa.push("c");
+        StringBuilder res = new StringBuilder();
+        String expected = "cba";
+
+        StringIterator it = sa.iterator();
+        while (it.hasNext()) {
+            String el = it.next();
+            res.append(el);
+        }
+
+        assertEquals(expected, res.toString());
+        assertEquals(3, sa.size());
+    }
+    @Test
+    void testStackIterator2() {
+        StringStack sa = new StringArray();
+        sa.push("a");
+        sa.push("b");
+        sa.push("c");
+        StringBuilder res = new StringBuilder();
+        String expected = "cba";
+
+        StringIterator it = sa.iterator();
+        while (it.hasNext()) {
+            String el = it.next();
+            res.append(el);
+        }
+
+        assertEquals(expected, res.toString());
+        assertEquals(3, sa.size());
+    }
+
+    @Test
+    void testQueueIterator1() {
+        StringQueue sa = new StringSinglyLinkedList();
+        sa.enqueue("a");
+        sa.enqueue("b");
+        sa.enqueue("c");
+        StringBuilder res = new StringBuilder();
+        String expected = "abc";
+
+        StringIterator it = sa.iterator();
+        while (it.hasNext()) {
+            String el = it.next();
+            res.append(el);
+        }
+
+        assertEquals(expected, res.toString());
+        assertEquals(3, sa.size());
+    }
+
+    @Test
     void test3() {
         // Dependency Inversion
         StringStack sa = new StringSinglyLinkedList();

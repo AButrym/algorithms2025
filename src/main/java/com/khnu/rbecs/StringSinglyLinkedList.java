@@ -21,6 +21,26 @@ public class StringSinglyLinkedList implements
     private Node tail = null;
 
     @Override
+    public StringIterator iterator() {
+        return this.new StringIteratorImpl();
+    }
+
+    private class StringIteratorImpl implements StringIterator {
+        Node cursor = head;
+        @Override
+        public boolean hasNext() {
+            return cursor != null;
+        }
+
+        @Override
+        public String next() {
+            String res = cursor.data;
+            cursor = cursor.next;
+            return res;
+        }
+    }
+
+    @Override
     public int size() {
         return size;
     }
@@ -64,10 +84,6 @@ public class StringSinglyLinkedList implements
         size--;
         if (size == 0) tail = null;
         return res;
-    }
-
-    private void checkNotEmpty() {
-        if (size == 0) throw new NoSuchElementException();
     }
 
     @Override

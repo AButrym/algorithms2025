@@ -42,13 +42,27 @@ public class StringArray implements StringStack {
         return res;
     }
 
-    private void checkNotEmpty() {
-        if (size == 0) throw new NoSuchElementException();
-    }
-
     @Override
     public String peekLast() {
         checkNotEmpty();
         return array[size - 1];
+    }
+
+    @Override
+    public StringIterator iterator() {
+        return new StringArrayIterator();
+    }
+
+    private class StringArrayIterator implements StringIterator {
+        int cursor = size;
+        @Override
+        public boolean hasNext() {
+            return cursor > 0;
+        }
+        @Override
+        public String next() {
+            if (!hasNext()) throw new NoSuchElementException();
+            return array[--cursor];
+        }
     }
 }
