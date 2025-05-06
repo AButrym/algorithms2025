@@ -3,43 +3,62 @@ package com.khnu.rbecs;
 import java.util.NoSuchElementException;
 
 public class BinaryHeap implements MyPriorityQueue {
-    private Node root = null;
+    private static int INITAL_CAPACITY = 8;
     private int size = 0;
 
-    private static class Node {
-        int value;
-        Node left;
-        Node right;
-        Node parent;
-        Node(int value) {
-            this.value = value;
-        }
-    }
-
+    private int[] data = new int[INITAL_CAPACITY];
 
     @Override
     public void add(int el) {
-        var node = new Node(el);
-        addLast(node);
-        while (promote(node)) {}
-        size++;
+        if (size + 1 == data.length) {
+            resize();
+        }
+        data[++size] = el;
+        int currentPos = size;
+        while (currentPos > 1) {
+            int parentPos = parent(currentPos);
+            if (data[currentPos] < data[parentPos]) {
+                swap(currentPos, parentPos);
+                currentPos = parentPos;
+            } else {
+                break;
+            }
+        }
     }
 
-    private void addLast(Node node) {
-        // TODO
+    private void resize() {
+        int[] newData = new int[data.length * 2];
+        System.arraycopy(data, 0, newData, 0, data.length);
+        data = newData;
     }
 
-    boolean promote(Node node) {
-        Node parent = node.parent;
-        if (node.value < parent.value) {
-            swap(node, parent);
+    private int parent(int ix) {
+        return ix >> 1; // ix / 2
+    }
+
+    private int left(int ix) {
+        return ix << 1; // 2 * ix
+    }
+
+    private int right(int ix) {
+        return (ix << 1) + 1; // 2 * ix + 1
+    }
+
+
+    boolean promote(int ix) {
+        var parent = parent(ix);
+        if (parent == 0) return false;
+        if (data[ix] < data[parent]) {
+            swap(ix, parent);
             return true;
         }
         return false;
     }
 
-    private static void swap(Node node, Node parent) {
-        // TODO
+    private void swap(int node1, int node2) {
+        var tmp = data[node1];
+        data[node1] = data[node2];
+        data[node2] = tmp;
     }
 
 
@@ -51,31 +70,41 @@ public class BinaryHeap implements MyPriorityQueue {
     @Override
     public int peekMin() {
         if (isEmpty()) throw new NoSuchElementException();
-        return root.value;
+        return data[1];
     }
 
     @Override
     public int pollMin() {
+        if (size == 1) {
+            return data[size--];
+        }
         int res = peekMin();
-        Node last = getLast();
-        swap(root, last); // TODO
-        sink(root);
+        swap(1, size);
         size--;
+        sink(1);
         return res;
     }
 
-    private Node getLast() {
-        return null; // TODO
-    }
+    void sink(int ix) {
+        int left = left(ix);
+        int right = right(ix);
 
-    void sink(Node node) {
-        Node best = node.left;
-        if (node.right != null && node.right.value < node.left.value) {
-            best = node.right;
+        if (left > size) {
+            return;
         }
-        if (best != null && best.value < node.value) {
-            swap(node, best);
-            sink(node);
+
+        if (right > size) {
+            if (data[ix] > data[left]) {
+                swap(ix, left);
+            }
+            return;
+        }
+
+        int best = data[left] <= data[right] ? left : right;
+
+        if (data[ix] > data[best]) {
+            swap(ix, best);
+            sink(best);
         }
     }
 }

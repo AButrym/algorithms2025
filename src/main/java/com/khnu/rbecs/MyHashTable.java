@@ -5,13 +5,15 @@ import java.util.NoSuchElementException;
 
 public class MyHashTable implements MyDictionary {
     public static final float LOAD_FACTOR = 0.75f;
-    public static final float RESIZE_FACTOR = 2.0f;
+//    public static final float RESIZE_FACTOR = 2.0f;
     private static final int DEFAULT_CAPACITY = 8;
+    private int mask = 0b111;
     private Node[] bins = new Node[DEFAULT_CAPACITY];
     private int size = 0;
 
     private int ixBin(String key) {
-        return Math.abs(key.hashCode()) % bins.length;
+        return key.hashCode() & mask;
+//        return Math.abs(key.hashCode()) % bins.length;
     }
 
     @Override
@@ -34,7 +36,16 @@ public class MyHashTable implements MyDictionary {
     }
 
     private void resize() {
-        // TODO
+        int newCapacity = bins.length * 2;
+        mask = (mask << 1) | 1;
+        Node[] newBins = new Node[newCapacity];
+        for (Entry entry : this) {
+            Node node = (Node) entry;
+            int ixBin = ixBin(node.key);
+            node.next = newBins[ixBin];
+            newBins[ixBin] = node;
+        }
+        bins = newBins;
     }
 
     private Node find(String key) {
