@@ -27,7 +27,7 @@ class MyHashTableTest {
 
     @Test
     void iteratorTest() {
-        var map = new MyHashTable();
+        var map = new MyHashTable<String, String>();
         int expectedSum = 0;
         for (int i = 0; i < 30; i++) {
             map.put(String.valueOf(i), String.valueOf(i * i));
@@ -48,7 +48,7 @@ class MyHashTableTest {
     void name1() {
         int n = 10_000_000;
         long t1 = System.nanoTime();
-        var map = new MyHashTable();
+        var map = new MyHashTable<String, String>();
         for (int i = 0; i < n; i++) {
             map.put(String.valueOf(i), String.valueOf(i * i));
         }
@@ -88,9 +88,5 @@ class MyHashTableTest {
         long t8 = System.nanoTime();
         System.out.println("Remove Time: " + (t8 - t7) * 1e-9);
         assertEquals(0, map2.size());
-    }
-    @Test
-    void name2() {
-
     }
 }

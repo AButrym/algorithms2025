@@ -2,11 +2,43 @@ package com.khnu.rbecs;
 
 import java.util.NoSuchElementException;
 
-public class BinaryHeap implements MyPriorityQueue {
+public class MinBinaryHeap implements MyPriorityQueue {
     private static int INITAL_CAPACITY = 8;
     private int size = 0;
 
     private int[] data = new int[INITAL_CAPACITY];
+
+    public MinBinaryHeap() {
+    }
+
+    public MinBinaryHeap(int[] arr) {
+        int sizeGuess = 2;
+        while (sizeGuess < arr.length) {
+            sizeGuess <<= 1;
+        }
+        data = new int[sizeGuess];
+        System.arraycopy(arr, 0, data, 1, arr.length);
+        size = arr.length;
+        for (int i = size / 2; i > 0; i--) {
+            sink(i);
+        }
+    }
+
+    public static void sort(int[] arr) {
+        MinBinaryHeap heap = new MinBinaryHeap(arr);
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = heap.pollMin();
+        }
+    }
+
+    String dataAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= size; i++) {
+            sb.append(data[i]);
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
 
     @Override
     public void add(int el) {

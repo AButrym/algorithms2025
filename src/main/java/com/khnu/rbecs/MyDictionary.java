@@ -1,16 +1,16 @@
 package com.khnu.rbecs;
 
-public interface MyDictionary
-        extends HasSize, Iterable<MyDictionary.Entry>
+public interface MyDictionary<K, V>
+        extends HasSize, Iterable<MyDictionary.Entry<K, V>>
 {
-    String put(String key, String value);
-    String get(String key);
-    String remove(String key);
-    boolean containsKey(String key);
+    V put(K key, V value);
+    V get(K key);
+    V remove(K key);
+    boolean containsKey(K key);
 
-    interface Entry {
-        String getKey();
-        String getValue();
-        void setValue(String value);
+    interface Entry<K1, V1> {
+        K1 getKey();
+        V1 getValue();
+        void setValue(V1 value);
     }
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import static com.khnu.rbecs.Sort.*;
@@ -392,5 +393,35 @@ class SortTest {
         assertThat(actual)
                 .withFailMessage("Test failed with seed = %d", seed)
                 .isEqualTo(expected);
+    }
+
+    @Test
+    void timing4() {
+        int n = 10_000_000;
+        int[] arr1 = createRange(n);
+        int seed = 42;//new Random().nextInt();
+//        reverse(arr1);
+        Sort.shuffle(arr1, new Random(seed));
+        int[] arr2 = arr1.clone();
+        int[] arr3 = arr1.clone();
+        int[] arr4 = arr1.clone();
+
+        long t0 = System.nanoTime();
+        quickSort(arr1);
+        long t1 = System.nanoTime();
+        mergeSort(arr2);
+        long t2 = System.nanoTime();
+        MinBinaryHeap.sort(arr3);
+        long t3 = System.nanoTime();
+        Arrays.sort(arr4);
+        long t4 = System.nanoTime();
+        System.out.println("quick sort time = " +
+                           (t1 - t0) * 1e-9 + " s");
+        System.out.println("merge sort time = " +
+                           (t2 - t1) * 1e-9 + " s");
+        System.out.println("heap sort time = " +
+                           (t3 - t2) * 1e-9 + " s");
+        System.out.println("Arrays.sort time = " +
+                           (t4 - t3) * 1e-9 + " s");
     }
 }
